@@ -23,6 +23,7 @@ var mongoose = require('mongoose'),
 
 /* Create a listing */
 exports.create = function(req, res) {
+  console.log("TRYING TO")
 
   /* Instantiate a Listing */
   var listing = new Listing(req.body);
@@ -42,7 +43,6 @@ exports.create = function(req, res) {
       res.status(400).send(err);
     } else {
       res.json(listing);
-      console.log(listing)
     }
   });
 };
@@ -56,12 +56,22 @@ exports.read = function(req, res) {
 /* Update a listing - note the order in which this function is called by the router*/
 exports.update = function(req, res) {
   var listing = req.listing;
+  var newListing = req.body
 
-  /* Replace the listings's properties with the new properties found in req.body */
- 
-  /*save the coordinates (located in req.results if there is an address property) */
- 
-  /* Save the listing */
+  if(req.results) {
+    listing.coordinates = {
+      latitude: req.results.lat,
+      longitude: req.results.lng
+    }
+  }
+
+  Listing.findOneAndUpdate({name: listing.name}, newListing)
+  .exec((error, listing) => {
+    if (error) {
+      throw error
+    }
+    res.json(listing)
+  })
 
 };
 
@@ -69,13 +79,25 @@ exports.update = function(req, res) {
 exports.delete = function(req, res) {
   var listing = req.listing;
 
-  /* Add your code to remove the listins */
+  Listing.deleteOne({name: listing.name}).exec((error, listing) => {
+    if (error) {
+      throw error
+    }
+    res.json(listing)
+  })
 
 };
 
 /* Retreive all the directory listings, sorted alphabetically by listing code */
 exports.list = function(req, res) {
-  /* Add your code */
+  Listing.find()
+    .then(listings => {
+        res.send(listings);
+    }).catch(err => {
+        res.status(500).send({
+            message: "Could not retrieve listings"
+        });
+    });
 };
 
 /* 

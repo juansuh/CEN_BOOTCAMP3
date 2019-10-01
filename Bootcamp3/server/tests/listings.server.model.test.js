@@ -19,7 +19,7 @@ var should = require('should'),
 var listing, id, latitude, longitude;
 
 listing =  {
-  code: "LBWEST", 
+  code: "LBW", 
   name: "Library West", 
   address: "1545 W University Ave, Gainesville, FL 32603, United States"
 }

@@ -15,7 +15,6 @@ describe('Listings CRUD tests', function() {
   before(function(done) {
     app = express.init();
     agent = request.agent(app);
-
     done();
   });
 
@@ -25,7 +24,7 @@ describe('Listings CRUD tests', function() {
       .end(function(err, res) {
         should.not.exist(err);
         should.exist(res);
-        res.body.should.have.length(147);
+        res.body.should.have.length(148);
         done();
       });
   });
@@ -51,7 +50,7 @@ describe('Listings CRUD tests', function() {
 
   it('should be able to save a listing', function(done) {
     var listing = {
-      code: 'CEN3035', 
+      code: 'CEN3031', 
       name: 'Introduction to Software Engineering', 
       address: '432 Newell Dr, Gainesville, FL 32611'
     };
@@ -62,7 +61,7 @@ describe('Listings CRUD tests', function() {
         should.not.exist(err);
         should.exist(res.body._id);
         res.body.name.should.equal('Introduction to Software Engineering');
-        res.body.code.should.equal('CEN3035');
+        res.body.code.should.equal('CEN3031');
         res.body.address.should.equal('432 Newell Dr, Gainesville, FL 32611');
         id = res.body._id;
         done();
